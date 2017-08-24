@@ -33,10 +33,10 @@ contract GoldBackedToken is Ownable, SafeMath, ERC20, Pausable {
 		feeCalculator = newFC;
 	}
 
-	uint256	public	domain_offset = 1483200000;			// 1st Jan 2017 Singapore Time because HGF is based in Singapore
+	// GoldFees needs to take care of Domain Offset - do not do here
 
 	function calcFees(uint256 from, uint256 to, uint256 amount) returns (uint256 val, uint256 fee) {
-		return GoldFees(feeCalculator).calcFees(from-domain_offset,to-domain_offset,amount);
+		return GoldFees(feeCalculator).calcFees(from,to,amount);
 	}
 
 	function GoldBackedToken(address feeCalc) {
