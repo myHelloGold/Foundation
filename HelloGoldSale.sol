@@ -21,15 +21,15 @@ contract HelloGoldSale is Pausable, SafeMath {
 
   uint256 tranchePeriod = 1 weeks;
 
-  // address of HGT Token. HGT must Approve this contract to disburse 300M tokens
+  // address of HGT Token. HGT must Approve this contract to disburse 180M tokens
   HelloGoldToken          token;
 
-  uint256 constant MaxCoinsR1      = 300 * 10**6 * 10**8;   // 300M HGT
-  uint256 public coinsRemaining    = 300 * 10**6 * 10**8; 
-  uint256 coinsPerTier             =  60 * 10**6 * 10**8;   // 60M HGT
-  uint256 public coinsLeftInTier   =  60 * 10**6 * 10**8;
+  uint256 constant MaxCoinsR1      = 180 * 10**6 * 10**8;   // 180M HGT
+  uint256 public coinsRemaining    = 180 * 10**6 * 10**8; 
+  uint256 coinsPerTier             =  40 * 10**6 * 10**8;   // 40M HGT
+  uint256 public coinsLeftInTier   =  40 * 10**6 * 10**8;
 
-  uint256 public minimumCap        =  40 * 10**6 * 10**8;   // 40M HGT
+  uint256 public minimumCap        =  0;    // presale achieved
 
   uint256 numTiers               = 5;
   uint16  public tierNo;
@@ -79,8 +79,8 @@ contract HelloGoldSale is Pausable, SafeMath {
   }
 
 
-  // 1 ether = 1000 example tokens 
-  uint256[5] public hgtRates = [153846153,142857142,142857142,125000000,117647058];
+  // 1 ether = N HGT tokens 
+  uint256[5] public hgtRates = [1248900000000,1196900000000,1144800000000,1092800000000,1040700000000];
                       
 
     /* Approve the account for operation */
@@ -170,7 +170,7 @@ contract HelloGoldSale is Pausable, SafeMath {
     uint256 totalTokens;
     uint256 hgtRate;
     require (funding()) ;
-    require (value > 0) ;
+    require (value > 1 finney) ;
     require (deposits[recipient] < personalMax);
 
     uint256 maxRefund = 0;
@@ -295,7 +295,7 @@ contract HelloGoldSale is Pausable, SafeMath {
       if (success()) {
           uint256 val = this.balance;
           if (val > 0) {
-            if (!msg.sender.send(val)) {
+            if (!multiSig.send(val)) {
                 log0("cannot withdraw");
             } else {
                 log0("funds withdrawn");

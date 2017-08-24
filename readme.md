@@ -165,7 +165,7 @@ Since each case involves a transfer of gold to HGF, there should be no impact on
 Launch implementation steps
 ====
 
-Launch contracts in this order : "HelloGoldToken", "HelloGoldSale", "GoldFees", "GoldBackedToken"
+Launch contracts in this order : "HelloGoldToken", "GoldFees", "GoldBackedToken"
 
 
 HGT launch params
@@ -191,23 +191,31 @@ Post Launch setup
 
 * Set GBT address in HGT contract
 * Set HGT address in GBT contract
-* Set Allowance in HGT to allow crowdsale to disburse up to 300M tokens
-`hellogoldtoken.Approve(role("HGF_Reserve"), saleAddress, t300M)`
 * Pause HGT
 
 N.B. Transaction sent from HF_Reserve account (needs gas) to HGT contract
 
-Pre ICO start 
-* Set Prices => 5 amounts of HGT/ETH + personal Max (in ether)
 
-LATE - warnings reported in Parity for HelloGoldSale
-function block(address user) MustBeCs {
-         ^---^
-function newCs(address newCs) onlyOwner {
-              ^-----------^
-event Reduction(string msg, address indexed buyer, uint256 wanted, uint256 allocated);
-                ^--------^
+Launch "HelloGoldSale"
+----------------------
+
+Check the Params
+
+* MaxCoins
+* CoinsReminingR1
+* CoinsPerTier
+* CoinsLeftInTier
+* MinimumCap
+
+* launch contract
+* Set Prices => 5 amounts of HGT/ETH + personal Max (in ether)
+* Unpause HGT
+* Set Allowance in HGT to allow crowdsale to disburse up to 300M tokens
+`hellogoldtoken.Approve(role("HGF_Reserve"), saleAddress, t300M)`
+* Pause HGT
+
 Post Sale
+---------
 
 * Unpause HGT
 

@@ -1,11 +1,12 @@
 pragma solidity ^0.4.11;
 
+import "./inc/Pausable.sol";
 import "./inc/Ownable.sol";
 import "./inc/SafeMath.sol";
 import "./inc/ERC20.sol";
 import "./GoldFees.sol";
 
-contract GoldBackedToken is Ownable, SafeMath, ERC20 {
+contract GoldBackedToken is Ownable, SafeMath, ERC20, Pausable {
 
   event Transfer(address indexed from, address indexed to, uint value);
   event Approval(address indexed owner, address indexed spender, uint value);
@@ -35,10 +36,6 @@ contract GoldBackedToken is Ownable, SafeMath, ERC20 {
 	uint256	public	domain_offset = 1483200000;			// 1st Jan 2017 Singapore Time because HGF is based in Singapore
 
 	function calcFees(uint256 from, uint256 to, uint256 amount) returns (uint256 val, uint256 fee) {
-		
-	
-	
-		
 		return GoldFees(feeCalculator).calcFees(from-domain_offset,to-domain_offset,amount);
 	}
 
@@ -206,18 +203,18 @@ contract GoldBackedToken is Ownable, SafeMath, ERC20 {
 		HGT = _hgt;
 	}
 
-	function parentFees(address where) {
+	function parentFees(address where) whenNotPaused {
 		require(msg.sender == HGT);
 	    update(where);		
 	}
 	
-	function parentChange(address where, uint newValue) { // called when HGT balance changes
+	function parentChange(address where, uint newValue) whenNotPaused { // called when HGT balance changes
 		require(msg.sender == HGT);
 	    balances[where].allocationShare = newValue;
 	}
 	
-	/* send DividendTokens */
-	function transfer(address _to, uint256 _value) returns (bool ok) {
+	/* send GBT */
+	function transfer(address _to, uint256 _value) whenNotPaused returns (bool ok) {
 	    update(msg.sender);              // Do this to ensure sender has enough funds.
 		update(_to); 
 
@@ -228,7 +225,7 @@ contract GoldBackedToken is Ownable, SafeMath, ERC20 {
         return true;
 	}
 
-	function transferFrom(address _from, address _to, uint _value) returns (bool success) {
+	function transferFrom(address _from, address _to, uint _value) whenNotPaused returns (bool success) {
 		var _allowance = allowed[_from][msg.sender];
 
 	    update(_from);              // Do this to ensure sender has enough funds.
@@ -241,7 +238,7 @@ contract GoldBackedToken is Ownable, SafeMath, ERC20 {
 		return true;
 	}
 
-  	function approve(address _spender, uint _value) returns (bool success) {
+  	function approve(address _spender, uint _value) whenNotPaused returns (bool success) {
 		require((_value == 0) || (allowed[msg.sender][_spender] == 0));
     	allowed[msg.sender][_spender] = _value;
     	Approval(msg.sender, _spender, _value);
