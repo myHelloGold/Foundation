@@ -24,10 +24,10 @@ contract HelloGoldSale is Pausable, SafeMath {
   // address of HGT Token. HGT must Approve this contract to disburse 180M tokens
   HelloGoldToken          token;
 
-  uint256 constant MaxCoinsR1      = 180 * 10**6 * 10**8;   // 180M HGT
-  uint256 public coinsRemaining    = 180 * 10**6 * 10**8; 
-  uint256 coinsPerTier             =  40 * 10**6 * 10**8;   // 40M HGT
-  uint256 public coinsLeftInTier   =  40 * 10**6 * 10**8;
+  uint256 constant MaxCoinsR1      =  80 * 10**6 * 10**8;   // 180M HGT
+  uint256 public coinsRemaining    =  80 * 10**6 * 10**8; 
+  uint256 coinsPerTier             =  16 * 10**6 * 10**8;   // 40M HGT
+  uint256 public coinsLeftInTier   =  16 * 10**6 * 10**8;
 
   uint256 public minimumCap        =  0;    // presale achieved
 
@@ -36,7 +36,7 @@ contract HelloGoldSale is Pausable, SafeMath {
   uint256 public preallocCoins;   // used for testing against cap (inc placement)
   uint256 public purchasedCoins;  // used for testing against tier pricing
   uint256 public ethRaised;
-  uint256 public personalMax;     // max ether per person during public sale
+  uint256 public personalMax     = 10 ether;     // max ether per person during public sale
   uint256 public contributors;
 
   address public cs;
@@ -165,19 +165,20 @@ contract HelloGoldSale is Pausable, SafeMath {
   
   event Purchase(address indexed buyer, uint256 level,uint256 value, uint256 tokens);
   event Reduction(string msg, address indexed buyer, uint256 wanted, uint256 allocated);
+  event MaxFunds(address sender, uint256 taken, uint256 returned);
   
   function createTokens(address recipient, uint256 value) private {
     uint256 totalTokens;
     uint256 hgtRate;
     require (funding()) ;
-    require (value > 1 finney) ;
+    require (value >= 1 finney) ;
     require (deposits[recipient] < personalMax);
 
     uint256 maxRefund = 0;
-    if ((deposits[msg.sender] + value) > personalMax) {
-        maxRefund = deposits[msg.sender] + value - personalMax;
+    if ((deposits[recipient] + value) > personalMax) {
+        maxRefund = deposits[recipient] + value - personalMax;
         value -= maxRefund;
-        log0("maximum funds exceeded");
+        MaxFunds(recipient,value,maxRefund);
     }  
 
     uint256 val = value;

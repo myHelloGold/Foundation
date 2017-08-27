@@ -3,17 +3,14 @@ Crowdsale Notes
 
 * Collects ether and allocates HGT
 * Allocation is immediate
-* ether are retained in the contract until min cap is met, after which all ether sent to multiSig
-* sale aims to raise 8m USD by selling 300,000,000 HGT
+* sale aims to raise 2.1m USD by selling 80,000,000 HGT
 * prices are set before the public sale to reflect the changing price of ether at that point
-* presale of up to 5M USD
 * allocation mechanism is via 'approve/transferFrom' in HGT
 * HGT is frozen after initial approve until sale complete / confirmation of results (release of HGT)
-* special pre-sale allocation mechanism needs no ether deposit to contract
-* maximum personal contribution of ether equivalent of USD 50,000 during public sale
-* minimum success of USD 1,000,000 in ether equivalent inc presale & public sale
-* if crowdsale fails, contributors may withdraw funds
+* maximum personal contribution of 10 ether during public sale
 * crowdsale based on block times.
+
+
 
 ------------
 KYC
@@ -26,14 +23,13 @@ KYC
 ------------
 Tiers
 
-* public sale is in price tiers of 60M HGT (max 5 tiers) individually priced
-* tier 1 starts at zero after the presale amount is allocated
-* actual price per tier set prior to sale start but after contract launch
+* public sale is in price tiers of 16M HGT (max 5 tiers) individually priced
+* price per tier set prior to sale start but after contract launch
 * deposits accorded HGT proportional to the price of the current tier
 * if a deposit completes one tier, the price of the HGT allocated will pro-rated
 * Crowdsale has a start date. End date is set to 1 week after start.
-* Each time a tranche is complete the new price comes into effect and the sale is extended by a further week until either last tranche is complete or total cap reached
-* Final contribution will have any balance ether returned aftre paying for tokens up to the cap
+* Each time a tranche is complete the new price comes into effect and the sale is extended to a week after that time until either last tranche is complete or total cap reached
+* Final contribution will have any balance ether returned after paying for tokens up to the cap
 
 --------
 Link to HGT
